@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "http://kevinllox.github.io/task-manager-ravn",
+  "homepage": "https://kevinllox.github.io/task-manager-ravn",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
