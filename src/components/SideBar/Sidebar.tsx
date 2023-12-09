@@ -1,6 +1,6 @@
 import { Flex, Box, Image } from '@chakra-ui/react';
 import ravnLogo from '../../assets/ravn-logo.svg';
-import NavItems from '../SearchBar/NavItems/NavItems';
+import NavItems from './NavItems/NavItems';
 
 function Sidebar() {
   return (
