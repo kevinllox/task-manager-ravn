@@ -1,4 +1,4 @@
-import { Container, useDisclosure } from '@chakra-ui/react';
+import { Box, useDisclosure } from '@chakra-ui/react';
 
 import SearchBar from '../SearchBar/SearchBar';
 import Task from '../Task/Task';
@@ -8,12 +8,12 @@ import ModalTask from '../ModalTask/ModalTask';
 function MainContent() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Container maxW="100%" overflow="auto">
+    <Box flex="1" overflow="auto">
       <SearchBar />
       <ButtonsContainer onOpen={onOpen} />
       <Task />
       <ModalTask isOpen={isOpen} onClose={onClose} />
-    </Container>
+    </Box>
   );
 }
 
