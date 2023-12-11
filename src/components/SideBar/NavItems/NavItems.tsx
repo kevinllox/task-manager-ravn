@@ -1,5 +1,5 @@
 import { Box, Link } from '@chakra-ui/react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { NAVITEMS } from '../../../const/consts';
 
 function NavItems() {
@@ -13,7 +13,7 @@ function NavItems() {
             key={key}
             color="white"
             to={pathName}
-            as={NavLink}
+            as={RouterLink}
             display="flex"
             alignItems="center"
             gap="10px"
@@ -21,13 +21,17 @@ function NavItems() {
             alignContent="center"
             fontSize="14px"
             letterSpacing="1px"
-            _activeLink={{
-              backgroundImage:
-                'linear-gradient(to right,rgba(45,48,52,0),rgba(218,85,73,.1))',
-              borderRight: '3px solid #DA584B',
-              color: 'primary.4',
-              fontWeight: 'bold',
-            }}
+            style={
+              isActive
+                ? {
+                    backgroundImage:
+                      'linear-gradient(to right,rgba(45,48,52,0),rgba(218,85,73,.1))',
+                    borderRight: '3px solid #DA584B',
+                    color: 'primary.4',
+                    fontWeight: 'bold',
+                  }
+                : {}
+            }
           >
             <Icon size="25px" color={isActive ? '#DA584B' : 'gray'} />
             {linkName}
