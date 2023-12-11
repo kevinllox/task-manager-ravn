@@ -1,31 +1,39 @@
-import { Flex, Box, Link } from '@chakra-ui/react';
-import { HiMiniSquares2X2, HiBars3 } from 'react-icons/hi2';
+import { Box, Link } from '@chakra-ui/react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { NAVITEMS } from '../../../const/consts';
 
 function NavItems() {
+  const location = useLocation();
   return (
     <Box mt="10">
-      <Flex
-        alignItems="center"
-        gap="10px"
-        padding="5px 20px"
-        alignContent="center"
-      >
-        <HiMiniSquares2X2 size="25px" color="gray" />
-        <Link color="white" href="/" _hover={{ textDecoration: 'none' }}>
-          DASHBOARD
-        </Link>
-      </Flex>
-      <Flex
-        alignItems="center"
-        gap="10px"
-        padding="5px 20px"
-        alignContent="center"
-      >
-        <HiBars3 size="25px" color="gray" />
-        <Link color="white" href="/" _hover={{ textDecoration: 'none' }}>
-          MY TASK
-        </Link>
-      </Flex>
+      {NAVITEMS.map(({ linkName, pathName, key, Icon }) => {
+        const isActive = location.pathname === pathName;
+        return (
+          <Link
+            key={key}
+            color="white"
+            to={pathName}
+            as={NavLink}
+            display="flex"
+            alignItems="center"
+            gap="10px"
+            padding="15px 20px"
+            alignContent="center"
+            fontSize="14px"
+            letterSpacing="1px"
+            _activeLink={{
+              backgroundImage:
+                'linear-gradient(to right,rgba(45,48,52,0),rgba(218,85,73,.1))',
+              borderRight: '3px solid #DA584B',
+              color: 'primary.4',
+              fontWeight: 'bold',
+            }}
+          >
+            <Icon size="25px" color={isActive ? '#DA584B' : 'gray'} />
+            {linkName}
+          </Link>
+        );
+      })}
     </Box>
   );
 }
