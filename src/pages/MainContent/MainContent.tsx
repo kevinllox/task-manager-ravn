@@ -1,9 +1,9 @@
 import { Box, useDisclosure } from '@chakra-ui/react';
 
-import SearchBar from '../SearchBar/SearchBar';
-import Task from '../Task/Task';
-import ButtonsContainer from '../ButtonsContainer/ButtonsContainer';
-import ModalTask from '../ModalTask/ModalTask';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import Task from '../../components/Task/Task';
+import ButtonsContainer from '../../components/ButtonsContainer/ButtonsContainer';
+import ModalTask from '../../components/ModalTask/ModalTask';
 
 function MainContent() {
   const { isOpen, onOpen, onClose } = useDisclosure();
