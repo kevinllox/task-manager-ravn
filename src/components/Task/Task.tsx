@@ -2,27 +2,12 @@ import { Flex, Grid, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@apollo/client';
 import GET_ALL_TASK from '../../graphql/querys/getAllTasks';
 import TaskApiResponse from '../../interfaces/TaskApiResponse';
-import ITask from '../../interfaces/ITask';
 import CardItem from './Card/CardItem/CardItem';
-
-interface TasksByStatus {
-  [status: string]: ITask[];
-}
+import getTasksByStatus from '../../utils/getTasksByStatus';
 
 function Task() {
-  const { loading, data } = useQuery<TaskApiResponse>(GET_ALL_TASK);
-
-  const tasksByStatus = data?.tasks.reduce((acc: TasksByStatus, task) => {
-    const { status } = task;
-
-    if (!acc[status]) {
-      acc[status] = [];
-    }
-
-    acc[status].push(task);
-
-    return acc;
-  }, {});
+  const { loading, data, error } = useQuery<TaskApiResponse>(GET_ALL_TASK);
+  const tasksByStatus = getTasksByStatus(data);
 
   if (loading) {
     return (
@@ -37,8 +22,12 @@ function Task() {
       </Flex>
     );
   }
+  if (error) {
+    <Flex justifyContent="center">
+      <Text>We could not get any tasks:(</Text>
+    </Flex>;
+  }
 
-  // Array of statuses to iterate over and render columns
   const statuses = Object.keys(tasksByStatus || {});
   return (
     <Grid
