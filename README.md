@@ -40,5 +40,5 @@ The application is deployed to GitHub Pages using GitHub Actions to define a sim
 A GitHub Flow has been implemented in this repository, considering its agility and prioritizing rapid releases.
 
 ## Deployment
-![Task Manager](image-1.png)
+![Task Manager](public/screenshot.png)
 You can visit this app here: [Task Manager App](https://kevinllox.github.io/task-manager-ravn/)
