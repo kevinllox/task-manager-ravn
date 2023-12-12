@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import MainContent from './pages/MainContent/MainContent';
 import Profile from './pages/Profile/Profile';
-import { ROUTES } from './const/consts';
+import { ROUTES } from './constants/consts';
 import NotFound from './pages/NotFound/NotFound';
 
 function App() {
