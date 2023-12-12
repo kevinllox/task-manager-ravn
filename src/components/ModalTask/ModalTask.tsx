@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Modal,
   Button,
@@ -16,7 +18,15 @@ import {
   MenuItem,
   Checkbox,
 } from '@chakra-ui/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import IUserApiResponse from '../../interfaces/IUserApiResponse';
+import GET_ALL_USERS from '../../graphql/querys/getAllUsers';
+import CREATE_TASK from '../../graphql/mutations/addTasks';
+import TaskAPiResponse from '../../interfaces/TaskApiResponse';
+import GET_ALL_TASK from '../../graphql/querys/getAllTasks';
+import { DEFAULT_TAGS } from '../../constants/consts';
 
 function ModalTask({
   isOpen,
@@ -26,9 +36,48 @@ function ModalTask({
   onClose: () => void;
 }) {
   const [taskTitle, setTaskTitle] = useState('');
+  const [estimate, setEstimate] = useState('');
+  const [assigneeId, setAssigneeId] = useState('');
+  const [date, setDate] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const { data } = useQuery<IUserApiResponse>(GET_ALL_USERS);
+  const { refetch: refetchTasks } = useQuery<TaskAPiResponse[]>(GET_ALL_TASK);
+  const [createTask, { loading }] = useMutation(CREATE_TASK, {
+    onCompleted: async () => {
+      try {
+        await refetchTasks();
+        toast.success('Task created successfully');
+      } catch (error) {
+        toast.error(`Error refetching: ${error}`);
+      }
+    },
+    onError: (error) => {
+      toast.error(`Error creating task: ${error.message}`);
+    },
+  });
 
   const handleUpdateTask = () => {
-    onClose();
+    if (
+      taskTitle.trim() === '' ||
+      estimate.trim() === '' ||
+      assigneeId.trim() === '' ||
+      date.trim() === '' ||
+      selectedTags.length < 0
+    ) {
+      toast.error('You need to fill up the form!');
+    }
+    createTask({
+      variables: {
+        input: {
+          assigneeId,
+          dueDate: new Date(date).toISOString(),
+          name: taskTitle,
+          pointEstimate: estimate,
+          status: 'TODO',
+          tags: [...selectedTags],
+        },
+      },
+    });
   };
   return (
     <Modal
@@ -64,12 +113,13 @@ function ModalTask({
                   color: 'white',
                 },
               }}
+              onChange={(e) => setEstimate(e.target.value)}
             >
-              <option value="option1">0</option>
-              <option value="option2">1</option>
-              <option value="option3">2</option>
-              <option value="option1">4</option>
-              <option value="option2">8</option>
+              <option value="ZERO">0</option>
+              <option value="ONE">1</option>
+              <option value="TWO">2</option>
+              <option value="FOUR">4</option>
+              <option value="EIGHT">8</option>
             </Select>
             <Select
               fontSize="14px"
@@ -80,11 +130,13 @@ function ModalTask({
                   color: 'white',
                 },
               }}
+              onChange={(e) => setAssigneeId(e.target.value)}
             >
-              <option value="option1">Grace Stone</option>
-              <option value="option2">Jhon Doe</option>
-              <option value="option3">Romeo Barnes</option>
-              <option value="option1">Kevin Grande</option>
+              {data?.users.map(({ id, fullName }) => (
+                <option value={id} key={id}>
+                  {fullName}
+                </option>
+              ))}
             </Select>
             <Menu>
               <MenuButton
@@ -105,19 +157,30 @@ function ModalTask({
                 bg="neutral.3"
                 sx={{ '> button': { backgroundColor: 'transparent' } }}
               >
-                <MenuItem>
-                  <Checkbox>Option 1</Checkbox>
-                </MenuItem>
-                <MenuItem>
-                  <Checkbox>Option 2</Checkbox>
-                </MenuItem>
-                <MenuItem>
-                  <Checkbox>Option 3</Checkbox>
-                </MenuItem>
+                {DEFAULT_TAGS.map((tag) => (
+                  <MenuItem key={tag}>
+                    <Checkbox
+                      isChecked={selectedTags.includes(tag)}
+                      onChange={() => {
+                        const newSelectedTags = selectedTags.includes(tag)
+                          ? selectedTags.filter((t) => t !== tag)
+                          : [...selectedTags, tag];
+                        setSelectedTags(newSelectedTags);
+                      }}
+                    >
+                      {tag}
+                    </Checkbox>
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
 
-            <Input fontSize="14px" type="date" placeholder="Select a date" />
+            <Input
+              fontSize="14px"
+              type="date"
+              placeholder="Select a date"
+              onChange={(e) => setDate(e.target.value)}
+            />
           </Flex>
         </ModalBody>
 
@@ -135,11 +198,13 @@ function ModalTask({
             color="white"
             _hover={{ backgroundColor: 'primary.3' }}
             onClick={handleUpdateTask}
+            isLoading={loading}
           >
             Create
           </Button>
         </ModalFooter>
       </ModalContent>
+      <ToastContainer />
     </Modal>
   );
 }
