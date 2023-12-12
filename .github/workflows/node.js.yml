@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: ["main"]
 env: 
-  VITE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwb3NpdGlvbklkIjoiZTdhNTAxNDQtNTA4ZC00OWFlLTg1MDYtZjhlYmFmODY2ZWEwIiwicHJvamVjdElkIjoiMWViYmNhNjAtZjg3ZS00MGFkLTgwOTUtZWIwMTdkNjBkOWExIiwiZnVsbE5hbWUiOiJLZXZpbiBHcmFuZGUiLCJlbWFpbCI6ImtldmluY2hhdmV6dHMxNUBnbWFpbC5jb20iLCJpYXQiOjE3MDE3MTM3ODR9.mMHwlVdJWs8TyzjEFR7vl3QOVXVTjRe4lV5v0CtsjtU
-  VITE_GRAPHQL_SERVER=https://syn-api-prod.herokuapp.com/graphql
+  VITE_API_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwb3NpdGlvbklkIjoiZTdhNTAxNDQtNTA4ZC00OWFlLTg1MDYtZjhlYmFmODY2ZWEwIiwicHJvamVjdElkIjoiMWViYmNhNjAtZjg3ZS00MGFkLTgwOTUtZWIwMTdkNjBkOWExIiwiZnVsbE5hbWUiOiJLZXZpbiBHcmFuZGUiLCJlbWFpbCI6ImtldmluY2hhdmV6dHMxNUBnbWFpbC5jb20iLCJpYXQiOjE3MDE3MTM3ODR9.mMHwlVdJWs8TyzjEFR7vl3QOVXVTjRe4lV5v0CtsjtU
+  VITE_GRAPHQL_SERVER: https://syn-api-prod.herokuapp.com/graphql
 jobs:
   build:
     runs-on: ubuntu-latest
