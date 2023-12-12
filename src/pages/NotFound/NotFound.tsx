@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { HiHome } from 'react-icons/hi';
-import { ROUTES } from '../../const/consts';
+import { ROUTES } from '../../constants/consts';
 
 function NoteFound() {
   return (

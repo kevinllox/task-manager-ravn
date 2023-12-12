@@ -1,6 +1,6 @@
 import { Box, Link } from '@chakra-ui/react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { NAVITEMS } from '../../../const/consts';
+import { NAVITEMS } from '../../../constants/consts';
 
 function NavItems() {
   const location = useLocation();

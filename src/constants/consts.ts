@@ -28,4 +28,20 @@ const NAVITEMS = [
   },
 ];
 
-export { ROUTES, NAVITEMS };
+const POINT_ESTIMATE = {
+  ZERO: 0,
+  ONE: 1,
+  TWO: 2,
+  FOUR: 4,
+  EIGHT: 8,
+};
+
+const TAGS = {
+  ANDROID: 'green',
+  IOS: 'yellow',
+  NODE_JS: 'gray',
+  RAILS: 'purple',
+  REACT: 'cyan',
+};
+
+export { ROUTES, NAVITEMS, POINT_ESTIMATE, TAGS };
