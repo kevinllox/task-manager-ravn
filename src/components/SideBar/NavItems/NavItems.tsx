@@ -27,7 +27,7 @@ function NavItems() {
                     backgroundImage:
                       'linear-gradient(to right,rgba(45,48,52,0),rgba(218,85,73,.1))',
                     borderRight: '3px solid #DA584B',
-                    color: 'primary.4',
+                    color: '#DA584B',
                     fontWeight: 'bold',
                   }
                 : {}
