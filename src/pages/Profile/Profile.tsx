@@ -1,47 +1,75 @@
 import {
   Box,
-  Card,
-  Image,
-  Stack,
-  CardBody,
   Heading,
   Text,
-  CardFooter,
-  Button,
+  Flex,
+  Spinner,
+  Avatar,
+  Badge,
+  VStack,
 } from '@chakra-ui/react';
+import { useQuery } from '@apollo/client';
+import ProfileApiResponse from '../../interfaces/ProfileApiResponse';
+import GET_PROFILE from '../../graphql/querys/getProfile';
+import profilePic from '../../assets/profile-pic.jpg';
 
 function Profile() {
-  return (
-    <Box flex="1" overflow="auto">
-      <Card
-        direction={{ base: 'column', sm: 'row' }}
-        overflow="hidden"
-        variant="outline"
-      >
-        <Image
-          objectFit="cover"
-          maxW={{ base: '100%', sm: '200px' }}
-          src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-          alt="Caffe Latte"
+  const { loading, data, error } = useQuery<ProfileApiResponse>(GET_PROFILE);
+  if (loading) {
+    return (
+      <Flex justifyContent="center">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
         />
+      </Flex>
+    );
+  }
+  if (error) {
+    <Flex justifyContent="center">
+      <Text>We could not get your profile:(</Text>
+    </Flex>;
+  }
+  return (
+    <Box
+      maxW="lg"
+      maxH="xs"
+      borderRadius="lg"
+      overflow="hidden"
+      margin="0 auto"
+      p={10}
+      shadow="lg"
+      bg="neutral.4"
+      flex="1"
+    >
+      <Flex align="center" mb={4}>
+        <Avatar size="lg" name={data?.profile.avatar} src={profilePic} />
+        <Box ml={3}>
+          <Heading as="h2" size="lg" color="neutral.1">
+            {data?.profile.fullName}
+          </Heading>
+          <Badge variant="outline" colorScheme="green">
+            {data?.profile.type}
+          </Badge>
+        </Box>
+      </Flex>
 
-        <Stack>
-          <CardBody>
-            <Heading size="md">The perfect latte</Heading>
-
-            <Text py="2">
-              Caffè latte is a coffee beverage of Italian origin made with
-              espresso and steamed milk.
-            </Text>
-          </CardBody>
-
-          <CardFooter>
-            <Button variant="solid" colorScheme="blue">
-              Buy Latte
-            </Button>
-          </CardFooter>
-        </Stack>
-      </Card>
+      <VStack spacing={2} align="start">
+        <Text color="neutral.1">
+          <strong>Email:</strong> {data?.profile.email}
+        </Text>
+        <Text color="neutral.1">
+          <strong>Created At:</strong>{' '}
+          {new Date(data?.profile.createdAt || '').toUTCString()}
+        </Text>
+        <Text color="neutral.1">
+          <strong>Updated At:</strong>{' '}
+          {new Date(data?.profile.updatedAt || '').toUTCString()}
+        </Text>
+      </VStack>
     </Box>
   );
 }
