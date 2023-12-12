@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import {
   Card,
   Flex,
@@ -14,25 +15,38 @@ import {
   CardBody,
   Image,
   HStack,
+  Icon,
 } from '@chakra-ui/react';
 import {
   HiEllipsisHorizontal,
-  HiOutlineBellAlert,
+  HiOutlineBell,
   HiPencil,
   HiTrash,
 } from 'react-icons/hi2';
 import clipImage from '../../../../assets/icon-card-1.svg';
 import graphImage from '../../../../assets/icon-card-2.svg';
 import commentImage from '../../../../assets/icon-card-3.svg';
+import profilePic from '../../../../assets/profile-pic.jpg';
+import ITask from '../../../../interfaces/ITask';
+import { POINT_ESTIMATE, TAGS } from '../../../../constants/consts';
+import getDifferenceInDays from '../../../../utils/getDifferenceInDays';
 
-function CardItem() {
+function CardItem({
+  name,
+  pointEstimate,
+  assignee,
+  tags,
+  dueDate,
+}: Pick<ITask, 'name' | 'assignee' | 'pointEstimate' | 'tags' | 'dueDate'>) {
+  const { color, day, bg } = getDifferenceInDays(dueDate);
+
   return (
     <Card w="100%" bg="neutral.4" color="neutral.1">
       <CardHeader padding="0.3em 1.25rem">
         <Flex justifyContent="space-between" alignItems="center">
           <Text fontSize="lg" fontWeight="bold">
             {' '}
-            Slack{' '}
+            {name}
           </Text>
           <Menu placement="bottom-end">
             <MenuButton
@@ -70,48 +84,44 @@ function CardItem() {
       </CardHeader>
       <CardBody padding="0.3rem 1.25rem">
         <Flex gap="4" justifyContent="space-between" alignItems="center">
-          <Text fontSize="md"> 4 points </Text>
+          <Text fontSize="md"> {POINT_ESTIMATE[pointEstimate]} points</Text>
           <Flex
             alignItems="center"
             justifyContent="space-between"
-            padding="3px 15px"
-            bg="neutral.3"
+            padding="5px 15px"
+            bg={bg}
             borderRadius="sm"
             gap="8px"
           >
-            <HiOutlineBellAlert />
-            <Text>TODAY</Text>
+            <Icon as={HiOutlineBell} color={color} />
+            <Text color={color} fontWeight="bold" fontSize="15px">
+              {day}
+            </Text>
           </Flex>
         </Flex>
         <Flex gap="8px" flexWrap="wrap" alignItems="center" mt="5">
-          <Box
-            padding="5px 15px"
-            bg="green.800"
-            borderRadius="md
+          {tags.map((tagName, key) => {
+            return (
+              <Box
+                key={key}
+                padding="5px 15px"
+                bg={`${TAGS[tagName]}.800`}
+                borderRadius="md
         "
-          >
-            <Text color="green.200" fontWeight="bold">
-              ANDROID
-            </Text>
-          </Box>
-          <Box
-            padding="5px"
-            bg="yellow.800"
-            borderRadius="md
-    
-        "
-          >
-            <Text color="yellow.200" fontWeight="bold">
-              NODE
-            </Text>
-          </Box>
+              >
+                <Text color={`${TAGS[tagName]}.200`} fontWeight="bold">
+                  {tagName}
+                </Text>
+              </Box>
+            );
+          })}
         </Flex>
       </CardBody>
       <CardFooter>
         <Flex justifyContent="space-between" w="100%">
           <Avatar
-            name="Segun Adebayo"
-            src="https://bit.ly/sage-adebayo"
+            name={assignee.fullName}
+            src={assignee.avatar || profilePic}
             size="sm"
           />
           <Flex gap="10px">
